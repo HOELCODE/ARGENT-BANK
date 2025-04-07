@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import logo from "../images/argentBankLogo.png";
-import "../css/Navbar.css";
 
 const Navbar = () => {
     return (
