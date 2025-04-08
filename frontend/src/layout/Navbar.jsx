@@ -33,7 +33,7 @@ const Navbar = () => {
                         Sign Out
                     </Link>
                 ) : (
-                    <Link className="main-nav-item" to="/sign-up">
+                    <Link className="main-nav-item" to="/sign-in">
                         <i className="fa fa-user-plus"></i>
                         Sign In
                     </Link>
