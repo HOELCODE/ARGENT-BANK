@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import logo from "../images/argentBankLogo.png";
 
 const Navbar = () => {
+    
     return (
         <nav className="main-nav">
             <Link className="main-nav-logo" to="/">
