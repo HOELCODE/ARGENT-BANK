@@ -1,51 +1,10 @@
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import Header from '../components/User-header'
 
 const User = () => {
-    const [userData, setUserData] = useState(null)
-    const token = useSelector((state) => state.auth.token)
-    const navigate = useNavigate()
 
-    useEffect(() => {
-        const fetchUserProfile = async () => {
-            try {
-                const response = await fetch('http://localhost:3001/api/v1/user/profile', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-
-                if (response.status === 401) {
-                    navigate('/login') // si token non valide => redirect
-                    return
-                }
-
-                const data = await response.json()
-                setUserData(data.body) // { firstName, lastName, email }
-            } catch (error) {
-                console.error('Erreur fetch profil :', error)
-            }
-        }
-
-        if (token) {
-            fetchUserProfile()
-        } else {
-            navigate('/login') // si pas de token => redirect
-        }
-    }, [token, navigate])
-
-    if (!userData) {
-        return <p>Chargement...</p>
-    }
     return (
         <main className="main bg-dark">
-            <div className="header">
-                <h1>Welcome back<br />{userData.firstName} {userData.lastName}!</h1>
-                <button className="edit-button">Edit Name</button>
-            </div>
+            <Header />
             <h2 className="sr-only">Accounts</h2>
             <section className="account">
                 <div className="account-content-wrapper">
