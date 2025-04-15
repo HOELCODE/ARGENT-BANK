@@ -60,6 +60,38 @@ export const fetchUserProfile = createAsyncThunk(
 )
 
 // -----------------------------
+// Fonction asynchrone pour editer le profil
+// -----------------------------
+
+export const editUserProfile = createAsyncThunk(
+  'auth/editUserProfile',
+  async (userData, thunkAPI) => {
+    const token = localStorage.getItem('token')
+
+    try {
+      const response = await fetch('http://localhost:3001/api/v1/user/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(userData)
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || 'Erreur lors de la modification du profil')
+      }
+
+      const data = await response.json()
+      return data.body
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message)
+    }
+  }
+)
+
+// -----------------------------
 // Slice Redux (authentification)
 // -----------------------------
 
@@ -105,6 +137,20 @@ const authSlice = createSlice({
         state.user = action.payload
       })
       .addCase(fetchUserProfile.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+
+      // Gestion du editUserProfile
+      .addCase(editUserProfile.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(editUserProfile.fulfilled, (state, action) => {
+        state.loading = false
+        state.user = action.payload
+      })
+      .addCase(editUserProfile.rejected, (state, action) => {
         state.loading = false
         state.error = action.payload
       })
