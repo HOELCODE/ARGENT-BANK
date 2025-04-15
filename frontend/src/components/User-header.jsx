@@ -26,6 +26,7 @@ const Header = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(editUserProfile({ firstName, lastName }))
+        setIsEditing(false);
     }
 
 
