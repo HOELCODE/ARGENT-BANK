@@ -280,6 +280,14 @@ button {
   color: #fff;
 }
 
+.nav-logged span {
+  margin-right: 30px;
+}
+
+.main-nav i {
+  margin-right: 5px;
+}
+
 @media (min-width: 720px) {
   .account {
     flex-direction: row;
