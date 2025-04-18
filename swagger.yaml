@@ -68,13 +68,14 @@ paths:
       parameters:
         - in: header
           name: Authorization
+          type: string
           description: Attach Bearer JWT token
           required: true
       produces:
         - application/json
       responses:
         '200':
-          description: User profile retrieved successully
+          description: User profile retrieved successfully
           schema:
             $ref: '#/definitions/ApiResponse'
         '400':
@@ -91,6 +92,7 @@ paths:
       parameters:
         - in: header
           name: Authorization
+          type: string
           description: Attach Bearer JWT token
           required: true
         - in: body
@@ -103,11 +105,165 @@ paths:
         - application/json
       responses:
         '200':
-          description: User profile retrieved successully
+          description: User profile updated successfully
           schema:
             $ref: '#/definitions/ApiResponse'
         '400':
           description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /transactions:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: Get all transactions for the current month
+      description: Retrieve all transactions of the authenticated user for the current month
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          description: Attach Bearer JWT token
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transactions retrieved successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid Request
+        '500':
+          description: Internal Server Error
+  /transactions/{id}/details:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: Get transaction details
+      description: Get the details of a specific transaction by ID
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          description: Attach Bearer JWT token
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Transaction ID
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction detail retrieved successfully
+          schema:
+            $ref: '#/definitions/TransactionDetail'
+        '404':
+          description: Transaction not found
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: Create transaction detail
+      description: Create a new transaction detail for a given transaction
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          description: Attach Bearer JWT token
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Transaction ID
+        - in: body
+          name: body
+          required: true
+          description: Transaction detail payload
+          schema:
+            $ref: '#/definitions/TransactionDetail'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Transaction detail created successfully
+          schema:
+            $ref: '#/definitions/TransactionDetail'
+        '400':
+          description: Invalid data
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: Update transaction detail
+      description: Update details of an existing transaction
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          description: Attach Bearer JWT token
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Transaction ID
+        - in: body
+          name: body
+          required: true
+          description: Transaction detail update payload
+          schema:
+            $ref: '#/definitions/TransactionDetail'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction detail updated successfully
+          schema:
+            $ref: '#/definitions/TransactionDetail'
+        '400':
+          description: Invalid update fields
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: Delete transaction detail
+      description: Delete the detail of a transaction by ID
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          description: Attach Bearer JWT token
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Transaction ID
+      produces:
+        - application/json
+      responses:
+        '204':
+          description: Transaction detail deleted successfully
+        '404':
+          description: Transaction detail not found
         '500':
           description: Internal Server Error
 securityDefinitions:
@@ -163,4 +319,30 @@ definitions:
       firstName:
         type: string
       lastName:
+        type: string
+  Transaction:
+    type: object
+    properties:
+      id:
+        type: string
+      date:
+        type: string
+      amount:
+        type: number
+      balance:
+        type: number
+      description:
+        type: string
+  TransactionDetail:
+    type: object
+    properties:
+      id:
+        type: string
+      transactionId:
+        type: string
+      type:
+        type: string
+      category:
+        type: string
+      notes:
         type: string
