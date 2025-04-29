@@ -68,9 +68,9 @@ paths:
       parameters:
         - in: header
           name: Authorization
-          type: string
           description: Attach Bearer JWT token
           required: true
+          type: string
       produces:
         - application/json
       responses:
@@ -92,9 +92,9 @@ paths:
       parameters:
         - in: header
           name: Authorization
-          type: string
           description: Attach Bearer JWT token
           required: true
+          type: string
         - in: body
           name: body
           description: Update user profile attributes
@@ -112,13 +112,12 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
-  /transactions:
+  /user/accounts/{accountId}/transactions:
     get:
       security:
         - Bearer: []
       tags:
         - Transaction Module
-      summary: Get all transactions for the current month
       description: Retrieve all transactions of the authenticated user for the current month
       parameters:
         - in: header
@@ -126,6 +125,11 @@ paths:
           type: string
           required: true
           description: Attach Bearer JWT token
+        - in: path
+          name: accountId
+          type: string
+          required: true
+          description: Account ID
       produces:
         - application/json
       responses:
@@ -139,13 +143,12 @@ paths:
           description: Invalid Request
         '500':
           description: Internal Server Error
-  /transactions/{id}/details:
+  /user/accounts/{accountId}/transactions/{id}/details:
     get:
       security:
         - Bearer: []
       tags:
         - Transaction Module
-      summary: Get transaction details
       description: Get the details of a specific transaction by ID
       parameters:
         - in: header
@@ -153,6 +156,11 @@ paths:
           type: string
           required: true
           description: Attach Bearer JWT token
+        - in: path
+          name: accountId
+          type: string
+          required: true
+          description: Account ID
         - in: path
           name: id
           type: string
@@ -174,7 +182,6 @@ paths:
         - Bearer: []
       tags:
         - Transaction Module
-      summary: Create transaction detail
       description: Create a new transaction detail for a given transaction
       parameters:
         - in: header
@@ -182,6 +189,11 @@ paths:
           type: string
           required: true
           description: Attach Bearer JWT token
+        - in: path
+          name: accountId
+          type: string
+          required: true
+          description: Account ID
         - in: path
           name: id
           type: string
@@ -209,7 +221,6 @@ paths:
         - Bearer: []
       tags:
         - Transaction Module
-      summary: Update transaction detail
       description: Update details of an existing transaction
       parameters:
         - in: header
@@ -217,6 +228,11 @@ paths:
           type: string
           required: true
           description: Attach Bearer JWT token
+        - in: path
+          name: accountId
+          type: string
+          required: true
+          description: Account ID
         - in: path
           name: id
           type: string
@@ -244,7 +260,6 @@ paths:
         - Bearer: []
       tags:
         - Transaction Module
-      summary: Delete transaction detail
       description: Delete the detail of a transaction by ID
       parameters:
         - in: header
@@ -252,6 +267,11 @@ paths:
           type: string
           required: true
           description: Attach Bearer JWT token
+        - in: path
+          name: accountId
+          type: string
+          required: true
+          description: Account ID
         - in: path
           name: id
           type: string
@@ -327,22 +347,16 @@ definitions:
         type: string
       date:
         type: string
+        format: date
       amount:
         type: number
-      balance:
-        type: number
+        format: float
       description:
         type: string
   TransactionDetail:
     type: object
     properties:
-      id:
-        type: string
-      transactionId:
-        type: string
-      type:
-        type: string
       category:
         type: string
-      notes:
+      note:
         type: string
